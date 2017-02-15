@@ -10,7 +10,7 @@ public class ArrayBinarySearch {
 
     public static int binarySearch(int searchNum) {
         int min = 0;
-        int max = searchArray.length;
+        int max = searchArray.length - 1;
         int position = (min + max) / 2;
         int searchCount = 0;
 
