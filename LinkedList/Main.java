@@ -17,5 +17,26 @@ public class Main {
                 li.remove();
         }
         System.out.println(numbers);
+
+        DoublyLinkedList Dnumbers = new DoublyLinkedList();
+
+        Dnumbers.addLast(10);
+        Dnumbers.addLast(20);
+        Dnumbers.addLast(30);
+        Dnumbers.addLast(40);
+        Dnumbers.addLast(50);
+
+        DoublyLinkedList.ListIterator dli = Dnumbers.listIterator();
+        while(dli.hasNext()) {
+            if((int)dli.next() == 30)
+                dli.remove();
+        }
+
+        while(dli.hasPrevious()) {
+            if((int)dli.previous() == 10)
+                dli.remove();
+        }
+
+        System.out.println(Dnumbers);
     }
 }
