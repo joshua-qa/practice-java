@@ -1,4 +1,4 @@
 # practice-java
-khanacademy의 알고리즘 강의 및 자바로 배우는 쉬운 자료구조(한빛아카데미) 책을 실습한 코드를 올리는 저장소 (Java)
+매일 java로 연습한 것을 올립니다.
 
-그 외에도 매일 연습한 것을 올립니다.
+`코딩 인터뷰 완전 분석` 연습 문제 풀이 코드는 CodingInterviewTraining 디렉토리에 올립니다.
