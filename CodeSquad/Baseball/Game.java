@@ -11,19 +11,19 @@ import java.util.Collections;
  */
 public class Game {
     private ArrayList<Integer> numberList = new ArrayList<>();
-    private int[] selectedNumber = new int[3];
+    private ArrayList<Integer> selectedNumber = new ArrayList<>();
     private final int MIN_NUMBER = 1;
     private final int MAX_NUMBER = 9;
+    private final int NUMBER_QUANTITY = 3;
     private boolean GAME_FLAG = true;
     public void run() {
         init();
+        Judge judge = new Judge();
 
         while(GAME_FLAG) {
-            int inputNumber = input();
-
-            judge(inputNumber);
+            int[] inputNumber = input();
             
-            if(isGameClear()) {
+            if(judge.isGameClear(inputNumber, selectedNumber)) {
                 System.out.println("모든 숫자를 맞추셨습니다! 승리입니다.");
                 GAME_FLAG = false;
             }
@@ -36,8 +36,6 @@ public class Game {
 
     }
 
-    private void judge(int inputNumber) {
-    }
 
     private void init() {
         for(int i = MIN_NUMBER; i <= MAX_NUMBER; i++) {
@@ -45,26 +43,25 @@ public class Game {
         }
 
         Collections.shuffle(numberList);
-        for(int i = 0; i < selectedNumber.length; i++) {
-            selectedNumber[i] = numberList.get(i);
+        for(int i = 0; i < NUMBER_QUANTITY; i++) {
+            selectedNumber.add(numberList.get(i));
         }
     }
 
-    private int input() {
+    private int[] input() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("생각하고 있는 숫자 3자리를 입력해주세요.");
-        int test = 0;
+        int[] numList = new int[3];
         
         try {
-            test = Integer.parseInt(br.readLine());
+            char[] inputNum = br.readLine().toCharArray();
+            for(int i = 0; i < numList.length; i++) {
+                numList[i] = inputNum[i] - '0';
+            }
         } catch(IOException e) {
             e.printStackTrace();
         }
-        return test;
+        return numList;
     }
 
-    public boolean isGameClear() {
-        
-        return true;
-    }
 }
