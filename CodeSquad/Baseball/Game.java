@@ -54,14 +54,19 @@ public class Game {
         int[] numList = new int[3];
         
         try {
-            char[] inputNum = br.readLine().toCharArray();
+            String inputNum = br.readLine();
             for(int i = 0; i < numList.length; i++) {
-                numList[i] = inputNum[i] - '0';
+                numList[i] = Integer.parseInt(inputNum.substring(i, i+1));
             }
-        } catch(IOException e) {
-            e.printStackTrace();
+        } catch(Exception e) {
+            printErrorMessage("올바른 숫자를 입력해주세요.");
+            return input();
         }
         return numList;
+    }
+
+    private void printErrorMessage(String message) {
+        System.err.println(message);
     }
 
 }
