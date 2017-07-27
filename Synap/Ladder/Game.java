@@ -10,24 +10,14 @@ public class Game {
         inputVertex(ladderArray);
         ArrayList<Vertex>[] ladder = convertVertex(ladderArray, getEdge(ladderArray));
 
-        for(int i = 1; i < ladder.length; i++) {
-            System.out.println("array " + i);
-            for (Vertex v : ladder[i]) {
-                System.out.println("h : (" + v.getHeight() + ") x: (" + v.getCurrentPoint() + ") y: (" + v.getTargetPoint() + ")");
-            }
-        }
+        Scanner sc = new Scanner(System.in);
+        System.out.println("사다리 게임을 시작할 출발 지점을 입력하세요(x는 입력 완료).");
 
-        while(true) {
-            Scanner sc = new Scanner(System.in);
-            System.out.println("사다리 정보를 입력하세요(x는 입력 완료).");
-
-            while (true) {
-                String inputString = sc.nextLine();
-                if ("x".equals(inputString)) {
-                    System.out.println("x");
-                    break;
-                }
-
+        while (true) {
+            String inputString = sc.nextLine();
+            if ("x".equals(inputString)) {
+                break;
+            } else {
                 try {
                     int startPoint = Integer.parseInt(inputString);
                     System.out.println(getDestination(startPoint, 0, ladder));
@@ -37,13 +27,18 @@ public class Game {
                 }
             }
         }
+
     }
 
     private int getDestination(int startPoint, int height, ArrayList<Vertex>[] ladder) {
         for(Vertex v : ladder[startPoint]) {
             int vertexHeight = v.getHeight();
+            if(vertexHeight > height) {
+                return getDestination(v.getTargetPoint(), vertexHeight, ladder);
+            }
         }
-        return 0;
+
+        return startPoint;
     }
 
     private ArrayList<Vertex>[] convertVertex(ArrayList<Vertex> ladderArray, int sizeOfArray) {
