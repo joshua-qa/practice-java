@@ -7,9 +7,30 @@ public class Game {
     public void run() {
         ArrayList<Vertex> ladderArray = new ArrayList<>();
         inputVertex(ladderArray);
+        ArrayList<Vertex>[] ladder = convertVertex(ladderArray, getEdge(ladderArray));
         for(Vertex v : ladderArray) {
             System.out.println("h : " + v.getHeight() + " x: " + v.getCurrentPoint() + " y: " + v.getTargetPoint());
         }
+    }
+
+    private ArrayList<Vertex>[] convertVertex(ArrayList<Vertex> ladderArray, int sizeOfArray) {
+        ArrayList<Vertex>[] ladder = (ArrayList<Vertex>[]) new ArrayList[sizeOfArray+1];
+
+        return ladder;
+    }
+
+    private int getEdge(ArrayList<Vertex> ladderArray) {
+        int curr = 0;
+        int count = 1;
+
+        for(Vertex v : ladderArray) {
+            if(v.getCurrentPoint() != curr) {
+                curr = v.getCurrentPoint();
+                count++;
+            }
+        }
+
+        return count;
     }
 
     private void inputVertex(ArrayList<Vertex> ladderArray) {
