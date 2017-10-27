@@ -1,45 +1,58 @@
 package Joshua.DS.Sort;
 
+import java.util.Arrays;
+
 /**
- * Created by Joshua on 2017-03-08.
+ * Created by Joshua on 2017-10-27.
  */
 public class QuickSort {
-    public static int[] array = new int[100000000];
+    static final int SIZE = 100000000;
+    public static int[] array = new int[SIZE];
     private static void swap(int a, int b) {
         int temp = array[a];
         array[a] = array[b];
         array[b] = temp;
     }
 
-    private static void sort(int start, int end) {
-        if(start < end) {
-            int p = start, l = start+1, r = end;
-
-            while(l <= r) {
-                while(l <= end && array[l] <= array[p]) {
-                    l++;
-                }
-                while(r >= start+1 && array[r] >= array[p]) {
-                    r--;
-                }
-                if(l < r) {
-                    swap(l, r);
-                }
+    private static int partition(int pivot, int start, int end) {
+        swap(pivot, end);
+        int i = start;
+        int j = end-1;
+        pivot = array[end];
+        while(i <= j) {
+            while(i <= end-1 && array[i] < pivot) {
+                i++;
             }
-            swap(p, r);
-            sort(start, r-1);
-            sort(r+1, end);
+            while(j >= 0 && array[j] > pivot) {
+                j--;
+            }
+
+            if(i <= j) {
+                swap(i, j);
+                i++;
+                j--;
+            }
+        }
+
+        swap(i, end);
+        return i;
+    }
+
+    private static void quickSort(int start, int end) {
+        if(start < end) {
+            int pivot = partition((start+end)/2, start, end);
+            quickSort(start, pivot-1);
+            quickSort(pivot+1, end);
         }
     }
 
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-        int n = 100000000;
-        for(int i = 0; i < n; i++) {
+        for(int i = 0; i < SIZE; i++) {
             array[i] = (int)(Math.random() * 1000000);
         }
-        sort(0, n-1);
 
+        quickSort(0, SIZE-1);
         long end = System.currentTimeMillis();
 
         System.out.println( "실행 시간 : " + ( end - start )/1000.0 );
