@@ -25,7 +25,7 @@ public class Manacher {
 
         for (int i = 0; i < N; i++) {
             if (i <= r) {
-                A[i] = Math.min(2 * p - i, r - i);
+                A[i] = Math.min(A[2 * p - i], r - i);
             }
             while (i - A[i] - 1 >= 0 && i + A[i] + 1 < N && S[i - A[i] - 1] == S[i + A[i] + 1]) {
                 A[i]++;
