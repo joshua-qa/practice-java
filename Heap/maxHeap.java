@@ -1,12 +1,10 @@
-import java.util.Arrays;
-
 public class MaxHeap {
 
-    private long[] heap;
+    private Long[] heap;
 
     private int size;
 
-    private int lastIndex = 1;
+    private int lastIndex = 0;
 
     private static final int DEFAULT_SIZE = 10;
 
@@ -18,68 +16,80 @@ public class MaxHeap {
 
     public MaxHeap(int size) {
         this.size = size;
-        this.heap = new long[size+1];
+        this.heap = new Long[size+1];
     }
 
     public void add(long num) {
         if (lastIndex == size) {
             ensureCapacity();
         }
-        heap[lastIndex++] = num;
-        int currentIndex = lastIndex - 1;
-        while (currentIndex > 1 && num >= heap[currentIndex / 2]) {
-            heap[currentIndex] ^= heap[currentIndex / 2];
-            heap[currentIndex / 2] ^= heap[currentIndex];
-            heap[currentIndex] ^= heap[currentIndex / 2];
-            currentIndex /= 2;
+        heap[++lastIndex] = num;
+        swim(lastIndex);
+    }
+
+    private boolean less(int key, int target) {
+        return heap[key] < heap[target];
+    }
+
+    private void swap(int key, int target) {
+        long temp = heap[key];
+        heap[key] = heap[target];
+        heap[target] = temp;
+    }
+
+    private void swim(int k) {
+        while (k > 1 && less(k/2, k)) {
+            swap(k, k/2);
+            k = k/2;
         }
     }
 
-    public long pop() {
-        long maxValue = remove();
+    private void sink(int k) {
+        while (k*2 <= lastIndex) {
+            int j = k*2;
+            if (j < lastIndex && less(j, j+1)) {
+                j++;
+            }
+            if (!less(k, j)) {
+                break;
+            }
+            swap(k, j);
+            k = j;
+        }
+    }
+
+    public Long pop() {
+        if (lastIndex == 0) {
+            return null;
+        }
+        Long maxValue = heap[1];
+        remove();
         return maxValue;
     }
 
-    private long remove() {
-        long removeNodeValue = heap[1];
-        heap[1] = heap[--lastIndex];
-        if (lastIndex == 1) {
-            return removeNodeValue;
+    private void remove() {
+        if (lastIndex == 0) {
+            return;
         }
-
-        int currentIndex = 1;
-        while (currentIndex < lastIndex) {
-            int leftNode = currentIndex * 2;
-            int rightNode = currentIndex * 2 + 1;
-            if (rightNode < lastIndex && heap[currentIndex] < heap[rightNode]) {
-                if (heap[leftNode] >= heap[rightNode]) {
-                    heap[currentIndex] ^= heap[leftNode];
-                    heap[leftNode] ^= heap[currentIndex];
-                    heap[currentIndex] ^= heap[leftNode];
-                    currentIndex = leftNode;
-                } else {
-                    heap[currentIndex] ^= heap[rightNode];
-                    heap[rightNode] ^= heap[currentIndex];
-                    heap[currentIndex] ^= heap[rightNode];
-                    currentIndex = rightNode;
-                }
-            } else if (leftNode < lastIndex && heap[currentIndex] < heap[leftNode]) {
-                heap[currentIndex] ^= heap[leftNode];
-                heap[leftNode] ^= heap[currentIndex];
-                heap[currentIndex] ^= heap[leftNode];
-                currentIndex = leftNode;
-            } else {
-                break;
-            }
-        }
-        return removeNodeValue;
+        heap[1] = heap[lastIndex--];
+        heap[lastIndex+1] = null;
+        sink(1);
     }
 
-    public String print() {
-        return Arrays.toString(this.heap);
+    public void print() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i <= lastIndex; i++) {
+            sb.append(heap[i]).append(" ");
+        }
+        System.out.println(sb);
     }
 
     private void ensureCapacity() {
-        heap = Arrays.copyOf(heap, heap.length + CAPACITY_INCREMENT_SIZE);
+        Long[] temp = new Long[heap.length + CAPACITY_INCREMENT_SIZE];
+        for (int i = 1; i <= lastIndex; i++) {
+            temp[i] = heap[i];
+        }
+        heap = temp;
+        size = temp.length-1;
     }
 }
